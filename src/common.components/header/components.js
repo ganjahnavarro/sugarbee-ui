@@ -11,7 +11,7 @@ export const Button = styled.button`
     color: white;
 `
 
-export const NavigatioBar = styled(NavBar)`
+export const NavigationBar = styled(NavBar)`
     background: #F1C40F;
 `
 

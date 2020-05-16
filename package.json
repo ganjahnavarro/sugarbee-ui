@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
+    "babel-eslint": "^10.1.0",
     "babel-plugin-import": "^1.12.2",
     "customize-cra": "^0.9.1",
     "react-app-rewired": "^2.1.5"

@@ -3,7 +3,7 @@ import { Icon } from "antd-mobile";
 import { Calendar } from "antd";
 import moment from "moment";
 
-import { Container, Button, NavigatioBar, CalendarContainer } from "./components";
+import { Container, Button, NavigationBar, CalendarContainer } from "./components";
 
 const Header = (props) => {
     const initialValue = moment().format("ddd, D MMMM, YYYY");
@@ -27,7 +27,7 @@ const Header = (props) => {
 
     return (
         <Container>
-            <NavigatioBar rightContent={ButtonComponent}
+            <NavigationBar rightContent={ButtonComponent}
                 icon={<Icon type="ellipsis" />}
                 onLeftClick={props.toggleSideMenu} />
 

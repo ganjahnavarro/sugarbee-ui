@@ -2,7 +2,7 @@ import { createAction } from "redux-actions";
 
 const fetchOrders = createAction("FETCH_ORDERS");
 const fetchOrder = createAction("FETCH_ORDER");
-const saveOrder = createAction("SAVE_ORDER");
+const createOrder = createAction("SAVE_ORDER");
 const editOrder = createAction("EDIT_ORDER");
 
 export const getOrders = () => {
@@ -35,14 +35,12 @@ export const getOrderById = (identifier) => {
     });
 };
 
-export const saveOrderToDB = (order) => {
-    return saveOrder({
+export const saveOrder = (data) => {
+    return createOrder({
         request: {
             url: "/orders",
             method: "POST",
-            data: {
-                ...order
-            }
+            data
         }
     })
 };

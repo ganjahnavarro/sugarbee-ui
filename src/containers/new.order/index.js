@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { InputItem, Modal, Icon, DatePicker, List, Picker } from "antd-mobile";
 import { Formik } from "formik";
 import { Select } from 'antd';
@@ -10,14 +11,12 @@ import { products } from "../../utils/values.products";
 import { newOrderForm as initialFormValues } from "../../utils/values.initial";
 import enUs from "antd-mobile/lib/date-picker/locale/en_US";
 
+import { saveOrder } from "../../redux/orders/actions";
+
 const { Option, OptGroup } = Select;
 const notification = Modal.alert;
-const showErrorNotification = ({ message, description }) => {
-    notification(message, description, [{ text: "OK" }]);
-};
 
-const NewOrder = ({ history }) => {
-    // TODO: products should be based on the reponse of orders request.
+const NewOrder = ({ history, createOrder }) => {
     const productOptions = products.map((product) => {
         return <OptGroup label={product.name} key={product.name}>
             {product.items.map((subItem) => (
@@ -28,22 +27,18 @@ const NewOrder = ({ history }) => {
         </OptGroup>
     });
 
-    const handleSubmit = async (values, actions) => {
+    const handleSubmit = async (data, actions) => {
         actions.setSubmitting(true);
-        try {
-            const response =  null; //TODO: Should request "Insert Order to DB" - POST.
-            if (response) {
-                const { data } = response;
-                if (data.result === "SUCCESS") {
-                    setTimeout(() => history.push("/ordering"), 300);
-                }
-            };
-        } catch(e) {
-            showErrorNotification({
-                message: "Oops",
-                description: "There seems a problem processing your request.",
+        createOrder(
+            Object.assign({}, data, {
+                deliveryMethod: data.deliveryMethod[0],
+                pickupLocation: data.pickupLocation[0],
+                paymentOption: data.paymentOption[0]
             })
-        }
+        );
+
+        // TODO success and error actions/reducers, useEffect?
+        notification("Nice", "Record created.", [{ text: "OK" }]);
     };
 
     return (
@@ -62,24 +57,28 @@ const NewOrder = ({ history }) => {
                                 onChange={props.handleChange("customerName")}
                                 children="Name:" />
 
-                            <InputItem name="phoneNumber"
+                            <InputItem name="contactNumber"
+                                value={props.values.contactNumber}
                                 type="number"
                                 placeholder="09XX XXX XXXX"
-                                onChange={props.handleChange("phoneNumber")}
+                                onChange={props.handleChange("contactNumber")}
                                 children="Contact #:" />
 
                             <InputItem name="email"
+                                value={props.values.email}
                                 type="email"
                                 placeholder="e.g. juandelacruz@thecompany.ph"
                                 onChange={props.handleChange("email")}
                                 children="Email:" />
 
                             <InputItem name="facebook"
+                                value={props.values.facebook}
                                 placeholder="e.g. https://fb.com/juandelacruz"
                                 onChange={props.handleChange("facebook")}
                                 children="Facebook:" />
 
                             <InputItem name="instagram"
+                                value={props.values.instagram}
                                 placeholder="e.g. _juandelacruz"
                                 onChange={props.handleChange("instagram")}
                                 children="Instagram:" />
@@ -107,13 +106,13 @@ const NewOrder = ({ history }) => {
                                 onEditOrders={(orders) => props.setFieldValue("orders", orders)}
                                 onAddProduct={(value) => props.setFieldValue("orders", [...props.values.orders, value])}/>
 
-                            <DatePicker name="dateOrdered"
+                            <DatePicker name="date"
                                 mode="date"
                                 title="Select Date"
                                 extra="Optional"
                                 locale={enUs}
-                                value={props.values.dateOrdered}
-                                onChange={e => props.setFieldValue("dateOrdered", e)}>
+                                value={props.values.date}
+                                onChange={e => props.setFieldValue("date", e)}>
                                     <List.Item arrow="horizontal">
                                         <LabelPicker>Date Ordered</LabelPicker>
                                     </List.Item>
@@ -213,4 +212,14 @@ const NewOrder = ({ history }) => {
     )
 };
 
-export default NewOrder
+const mapStateToProps = (state) => {
+    return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        createOrder: (dateToFetch) => dispatch(saveOrder(dateToFetch))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewOrder);
