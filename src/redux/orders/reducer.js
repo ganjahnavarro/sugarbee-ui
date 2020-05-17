@@ -54,6 +54,9 @@ export default handleActions({
             currentEditIndex: action.payload.currentEditIndex,
         }
     },
+    ADD_ORDER: (state, action) => {
+        return { ...state, saveOrderStatus: null }
+    },
     SAVE_ORDER_SUCCESS: (state, action) => {
         return { ...state, saveOrderStatus: "SUCCESS" }
     },

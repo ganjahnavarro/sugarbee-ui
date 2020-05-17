@@ -1,8 +1,14 @@
+import { createBrowserHistory } from 'history';
 import { applyMiddleware, createStore, compose } from "redux";
-import axiosMiddleware from "redux-axios-middleware";
 
-import reducers from "./reducers";
-import client from "../utils/axios"
+import { routerMiddleware } from 'connected-react-router';
+import axiosMiddleware from "redux-axios-middleware";
+import logger from 'redux-logger';
+
+import createRootReducer from "./reducers";
+import client from "../utils/axios";
+
+export const history = createBrowserHistory();
 
 const composeEnhancers =
     typeof window === "object" &&
@@ -15,12 +21,17 @@ const composeEnhancers =
 
 const enhancer = composeEnhancers(
     applyMiddleware(
-        axiosMiddleware(client)
+        routerMiddleware(history),
+        axiosMiddleware(client),
+        logger
     ),
     // other store enhancers if any
 );
 
-export default createStore(
-    reducers,
-    enhancer
-)
+export default function configureStore() {
+    const store = createStore(
+        createRootReducer(history),
+        enhancer
+    );
+    return store;
+};
