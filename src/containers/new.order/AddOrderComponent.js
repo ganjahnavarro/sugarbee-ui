@@ -7,7 +7,7 @@ import { ProductContainer, ProductList, AddProductDiv, SubmitContainer } from ".
 import EditOrderModal from "./EditOrderModal";
 
 const InputProduct = ({ productOptions, orders, onAddProduct, onEditOrders, onSaveEditedOrders }) => {
-    const [selectedItem, setSelectedItem] = useState("Apple_Crumble");
+    const [selectedItemId, setSelectedItemId] = useState(1);
     const [itemQuantity, setItemQuantity] = useState(1);
 
     const [visible, setVisible] = useState(false);
@@ -41,24 +41,22 @@ const InputProduct = ({ productOptions, orders, onAddProduct, onEditOrders, onSa
     products.forEach((product) => {
         product.items.forEach((item) => {
             actualProductsFromMapping.push({
-                value: item.name.replace(/ /g,"_"),
+                id: item.id,
                 name: item.name,
                 price: item.price,
             })
         })
     })
 
-    const selectedItemFields = actualProductsFromMapping.find((product) => product.value === selectedItem);
-    const itemObjectCopy = {
-        value: selectedItemFields.value,
-        name: selectedItemFields.name,
-        price: selectedItemFields.price,
-        quantity: itemQuantity,
-    };
-
+    const selectedItem = actualProductsFromMapping.find((product) => product.id === selectedItemId);
     const onAddProductToOrders = () => {
-        onAddProduct(itemObjectCopy);
-        setSelectedItem("Apple_Crumble");
+        onAddProduct({
+            productId: selectedItem.id,
+            name: selectedItem.name,
+            price: selectedItem.price,
+            quantity: itemQuantity,
+        });
+        setSelectedItemId(1);
         setItemQuantity(1);
     };
 
@@ -80,7 +78,7 @@ const InputProduct = ({ productOptions, orders, onAddProduct, onEditOrders, onSa
             </ProductList>
 
             <AddProductDiv>
-                <Select className="product-dropdown" value={selectedItem} onChange={(value) => setSelectedItem(value)}>
+                <Select className="product-dropdown" value={selectedItem.name} onChange={(value) => setSelectedItemId(value)}>
                     {productOptions}
                 </Select>
                 <InputNumber className="product-quantity" min={1} value={itemQuantity} onChange={(value) => setItemQuantity(value)}/>

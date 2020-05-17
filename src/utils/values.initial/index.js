@@ -15,15 +15,15 @@ export const newOrderForm = {
     pickupDate: date,
     orders: [
         {
-            "value": "Apple_Crumble",
+            "productId": 1,
             "name": "Apple Crumble",
             "price": 800,
             "quantity": 2
         }, {
-            "value": "Splenda_Apple_Crumble",
+            "productId": 2,
             "name": "Splenda Apple Crumble",
             "price": 1100,
-            "quantity": 2
+            "quantity": 3
         }
     ],
     deliveryMethod: ["Lalamove"],

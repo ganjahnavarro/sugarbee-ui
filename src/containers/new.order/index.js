@@ -20,7 +20,7 @@ const NewOrder = ({ history, createOrder, saveOrderStatus }) => {
     const productOptions = products.map((product) => {
         return <OptGroup label={product.name} key={product.name}>
             {product.items.map((subItem) => (
-                <Option key={subItem.name} value={subItem.name.replace(/ /g,"_")}>
+                <Option key={subItem.id} value={subItem.id}>
                     {subItem.name}
                 </Option>
             ))}
