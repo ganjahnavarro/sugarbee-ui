@@ -106,13 +106,13 @@ const NewOrder = ({ history, createOrder }) => {
                                 onEditOrders={(orders) => props.setFieldValue("orders", orders)}
                                 onAddProduct={(value) => props.setFieldValue("orders", [...props.values.orders, value])}/>
 
-                            <DatePicker name="date"
+                            <DatePicker name="dateOrdered"
                                 mode="date"
                                 title="Select Date"
                                 extra="Optional"
                                 locale={enUs}
-                                value={props.values.date}
-                                onChange={e => props.setFieldValue("date", e)}>
+                                value={props.values.dateOrdered}
+                                onChange={e => props.setFieldValue("dateOrdered", e)}>
                                     <List.Item arrow="horizontal">
                                         <LabelPicker>Date Ordered</LabelPicker>
                                     </List.Item>

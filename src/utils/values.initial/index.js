@@ -2,7 +2,6 @@ import moment from "moment";
 
 const date = moment().toDate();
 
-// TODO update on release
 export const newOrderForm = {
     customerName: "Eunice Anikka",
     contactNumber: "09283735902",
@@ -12,7 +11,7 @@ export const newOrderForm = {
     deliveryAddress: "123 North Caloocan",
     request: "Test request",
     specialOffer: "Test special offer",
-    date: date,
+    dateOrdered: date,
     pickupDate: date,
     orders: [
         {
