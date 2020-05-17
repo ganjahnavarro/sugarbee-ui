@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { InputItem, Modal, Icon, DatePicker, List, Picker } from "antd-mobile";
 import { Formik } from "formik";
@@ -16,7 +16,7 @@ import { saveOrder } from "../../redux/orders/actions";
 const { Option, OptGroup } = Select;
 const notification = Modal.alert;
 
-const NewOrder = ({ history, createOrder }) => {
+const NewOrder = ({ history, createOrder, saveOrderStatus }) => {
     const productOptions = products.map((product) => {
         return <OptGroup label={product.name} key={product.name}>
             {product.items.map((subItem) => (
@@ -27,6 +27,14 @@ const NewOrder = ({ history, createOrder }) => {
         </OptGroup>
     });
 
+    useEffect(() => {
+        if (saveOrderStatus === "SUCCESS") {
+            notification("Nice!", "An order has been saved.", [{ text: "OK", onPress: () => history.push("/ordering") }]);
+        } else if (saveOrderStatus === "FAIL") {
+            notification("Oops!", "An error has occurred, please try again.", [{ text: "OK" }]);
+        }
+    }, [saveOrderStatus])
+
     const handleSubmit = async (data, actions) => {
         actions.setSubmitting(true);
         createOrder(
@@ -36,16 +44,12 @@ const NewOrder = ({ history, createOrder }) => {
                 paymentOption: data.paymentOption[0]
             })
         );
-
-        // TODO success and error actions/reducers, useEffect?
-        notification("Nice", "Record created.", [{ text: "OK" }]);
     };
 
     return (
         <Container>
             <NavigationBar icon={<Icon type="left" />}
-              leftContent={[<NavLink to="/ordering">Back</NavLink>]}
-              rightContent={"Order #001"}> {/*this should be a submit button*/}
+              leftContent={[<NavLink to="/ordering">Back</NavLink>]}>
             </NavigationBar>
             <Formik onSubmit={handleSubmit} initialValues={initialFormValues}>
                 {props => (
@@ -213,7 +217,8 @@ const NewOrder = ({ history, createOrder }) => {
 };
 
 const mapStateToProps = (state) => {
-    return {};
+    const { saveOrderStatus } = state.orders;
+    return { saveOrderStatus };
 };
 
 const mapDispatchToProps = (dispatch) => {
