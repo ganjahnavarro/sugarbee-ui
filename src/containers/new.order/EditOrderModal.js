@@ -36,6 +36,10 @@ const EditOrderModal = ({ visible, closeModal, orders, onEditOrders }) => {
         const removedItem = newOrders.splice(index, 1);
         setRemoved(removed => removed.concat(removedItem));
         onEditOrders(newOrders);
+
+        if (newOrders.length === 0) {
+            closeModal();
+        }
     };
 
     const handleBack = () => {
@@ -66,7 +70,6 @@ const EditOrderModal = ({ visible, closeModal, orders, onEditOrders }) => {
                     type="submit"
                     value="Save" />
                 ]}>
-            {"Order #001"}
         </NavigationBar>
     );
     return (

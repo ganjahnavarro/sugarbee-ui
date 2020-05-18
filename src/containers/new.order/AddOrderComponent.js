@@ -60,17 +60,21 @@ const InputProduct = ({ productOptions, orders, onAddProduct, onEditOrders, onSa
         setItemQuantity(1);
     };
 
+    const editOrderComponent = <div>
+        <Button type="ghost" size="small" onClick={() => setVisible(true)} inline>Edit</Button>
+        <EditOrderModal
+            visible={visible}
+            closeModal={closeModal}
+            onEditOrders={onEditOrders}
+            onSaveEditedOrders={onSaveEditedOrders}
+            orders={orders}  />
+    </div>;
+
     return (
         <ProductContainer>
             <div className="header">
                 <p>Orders</p>
-                <Button type="ghost" size="small" onClick={() => setVisible(true)} inline>Edit</Button>
-                <EditOrderModal
-                    visible={visible}
-                    closeModal={closeModal}
-                    onEditOrders={onEditOrders}
-                    onSaveEditedOrders={onSaveEditedOrders}
-                    orders={orders}  />
+                {orders.length > 0 ? editOrderComponent : undefined}
             </div>
 
             <ProductList>
