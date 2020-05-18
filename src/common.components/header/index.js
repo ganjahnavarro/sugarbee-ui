@@ -6,8 +6,7 @@ import moment from "moment";
 import { Container, Button, NavigationBar, CalendarContainer } from "./components";
 
 const Header = (props) => {
-    const initialValue = moment().format("ddd, D MMMM, YYYY");
-    const [selectedValue, setSelectedValue] = useState(moment(initialValue));
+    const [selectedValue, setSelectedValue] = useState(moment());
     const [showCalendar, setShowCalendar] = useState(false);
 
     const onToggleCalendar = () => setShowCalendar(!showCalendar);

@@ -11,7 +11,7 @@ const showErrorNotification = ({ message, description }) => {
 };
 
 const Login = ({ history }) => {
-    const initialValues = { username: null, password: null };
+    const initialValues = { username: "", password: "" };
     const handleSubmit = async (values, actions) => {
         actions.setSubmitting(true);
         try {
