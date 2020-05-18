@@ -1,33 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+
 import { Modal } from "antd-mobile";
 import { Formik } from "formik";
 
 import { CenteredContainer, LogoImage, TextInput, SubmitButton } from "./components";
-import login from "../../utils/requests/login";
+
+import { login } from "../../redux/auth/actions";
 
 const notification = Modal.alert;
-const showErrorNotification = ({ message, description }) => {
-    notification(message, description, [{ text: "OK" }]);
-};
 
-const Login = ({ history }) => {
+const Login = ({ loginRequest, loginStatus, history }) => {
     const initialValues = { username: "", password: "" };
+
+    useEffect(() => {
+        if (loginStatus === "SUCCESS") {
+            history.push("/ordering");
+        } else if (loginStatus === "FAIL") {
+            notification("Oops!", "The credentials you put in are incorrect.", [{ text: "OK" }]);
+        }
+    }, [loginStatus])
+
     const handleSubmit = async (values, actions) => {
         actions.setSubmitting(true);
-        try {
-            const response = await login(values);
-            if (response) {
-                const { data } = response;
-                if (data.result === "SUCCESS") {
-                    setTimeout(() => history.push("/ordering"), 300);
-                }
-            };
-        } catch(e) {
-            showErrorNotification({
-                message: "Oops",
-                description: "The credentials you put in are incorrect.",
-            });
-        }
+        loginRequest(values);
     };
 
     return (
@@ -60,4 +56,15 @@ const Login = ({ history }) => {
     );
 }
 
-export default Login;
+const mapStateToProps = (state) => {
+    const { loginStatus } = state.auth;
+    return { loginStatus };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loginRequest: (data) => dispatch(login(data))
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
