@@ -2,17 +2,17 @@ import React from "react";
 import { CustomerName, OrderItem, Orders, ContactNum, Price } from "./components";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { orderList, orderDetails } from "../../utils/dummy.array";
+import { orderDetails } from "../../utils/dummy.array";
 import { editOrderByIndex } from "../../redux/orders/actions";
 
 const OrderView = (props) => {
     return (
         <div>
-            {orderList
+            {props.orders
                 .sort((a, b) => a.customerName.localeCompare(b.customerName))
                 .map((order, index) => (
                     <OrderItem
-                        key={order.id}
+                        key={order.identifier}
                         wrap
                         multipleLine align="top"
                         style={{ background: (index % 2) ? "none" : "#FCF3CF" }}

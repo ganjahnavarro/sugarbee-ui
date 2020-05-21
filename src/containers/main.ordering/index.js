@@ -13,7 +13,7 @@ import { Container, ViewContainer } from "./components";
 
 import { getOrdersByDate } from "../../redux/orders/actions";
 
-const MainOrdering = ({ fetchOrders }) => {
+const MainOrdering = ({ fetchOrders, orders }) => {
     const initialDate = moment();
 
     const [drawerVisible, setDrawerVisible] = useState(false);
@@ -21,10 +21,7 @@ const MainOrdering = ({ fetchOrders }) => {
     const [calendarDate, setCalendarDate] = useState(initialDate);
 
     useEffect(() => {
-        const executeFetchOrders = () => {
-            fetchOrders(calendarDate.format("YYYY-MM-DD"));
-        };
-        executeFetchOrders();
+        fetchOrders(calendarDate.format("YYYY-MM-DD"));
     }, [calendarDate, fetchOrders]);
 
     const onViewChanged = (event) => {
@@ -36,7 +33,7 @@ const MainOrdering = ({ fetchOrders }) => {
         <Container>
             <NavigationDrawer visible={drawerVisible} onExitNav={() => setDrawerVisible(false)}>
                 <Header toggleSideMenu={() => setDrawerVisible(!drawerVisible)} onDateChanged={(value) => setCalendarDate(value)}/>
-                <MainContainer selectedView={selectedView} />
+                <MainContainer selectedView={selectedView} orders={orders}/>
             </NavigationDrawer>
             <Footer onSelectedViewChanged={onViewChanged}/>
         </Container>
@@ -49,14 +46,15 @@ const MainContainer = (props) => {
         <ViewContainer>
             {props.selectedView === 0
                 ? <ItemView />
-                : <OrderView />}
+                : <OrderView orders={props.orders}/>}
         </ViewContainer>
     </div>)
 }
 
 
 const mapStateToProps = (state) => {
-    return {};
+    const { orders } = state.orders;
+    return { orders };
 };
 
 const mapDispatchToProps = (dispatch) => {
