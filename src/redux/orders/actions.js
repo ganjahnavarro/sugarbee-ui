@@ -18,7 +18,7 @@ export const getOrdersByDate = (date) => {
     return fetchOrders({
         request: {
             params: {
-                createdDate: date,
+                pickupDate: date,
             },
             url: "/orders",
             method: "GET"
