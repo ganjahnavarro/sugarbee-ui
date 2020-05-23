@@ -2,7 +2,8 @@ import React from "react";
 import { CustomerName, OrderItem, Orders, ContactNum, Price } from "./components";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { orderDetails } from "../../utils/dummy.array";
+
+import { products } from "../../utils/values.products";
 import { editOrderByIndex } from "../../redux/orders/actions";
 
 const OrderView = (props) => {
@@ -10,24 +11,44 @@ const OrderView = (props) => {
         <div>
             {props.orders
                 .sort((a, b) => a.customerName.localeCompare(b.customerName))
-                .map((order, index) => (
-                    <OrderItem
-                        key={order.identifier}
-                        wrap
-                        multipleLine align="top"
+                .map((order, index) => {
+
+                    let totalPrice = 0;
+                    const orderDetailsComponent = order.orders.map(item => {
+                        totalPrice += (item.price * item.quantity);
+                        const productName = getProductName(item.productId);
+                        return <Orders key={item.productId}>{item.quantity} x {productName}</Orders>;
+                    });
+
+                    // Format with comman and decimal places
+                    totalPrice = totalPrice.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+
+                    return <OrderItem
+                        key={order.id}
+                        wrap multipleLine align="top"
                         style={{ background: (index % 2) ? "none" : "#FCF3CF" }}
                         onClick={() => props.editOrder(index)}>
                             <CustomerName>{order.customerName}</CustomerName>
-                            <ContactNum>{order.phone}</ContactNum>
-                            {orderDetails.map(item => (
-                                <Orders key={item.productName}>{item.quantity} x {item.productName}</Orders>
-                            ))}
-                            <Price>Php {order.totalPrice}</Price>
+                            <ContactNum>{order.contactNumber}</ContactNum>
+                            {orderDetailsComponent}
+                            <Price>PHP {totalPrice}</Price>
                     </OrderItem>
-                ))
+                })
             }
         </div>
     )
+};
+
+const getProductName = (productId) => {
+    let productName;
+    products.forEach((product) => {
+        product.items.forEach((item) => {
+            if (item.id === productId) {
+                productName = item.name;
+            }
+        });
+    })
+    return productName;
 };
 
 const mapStateToProps = (state) => {

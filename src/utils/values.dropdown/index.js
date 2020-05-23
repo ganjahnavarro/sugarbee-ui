@@ -3,10 +3,10 @@ export const storeLocations = [{
     value: "Magallanes",
 }, {
     label: "Paseo Center",
-    value: "Paseo_Center",
+    value: "Paseo Center",
 }, {
     label: "BGC Stopover",
-    value: "Bgc_Stopover",
+    value: "BGC Stopover",
 }];
 
 export const deliveryMethods = [{
@@ -19,13 +19,13 @@ export const deliveryMethods = [{
 
 export const paymentOptions = [{
     label: "BDO",
-    value: "bdo",
+    value: "BDO",
 }, {
     label: "GCASH",
-    value: "gcash",
+    value: "GCASH",
 }, {
     label: "BPI",
-    value: "bpi",
+    value: "BPI",
 }];
 
 export const paymentStatusData = [

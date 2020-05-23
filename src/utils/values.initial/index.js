@@ -28,7 +28,7 @@ export const newOrderForm = {
     ],
     deliveryMethod: ["Lalamove"],
     pickupLocation: ["Magallanes"],
-    paymentOption: ["bdo"],
+    paymentOption: ["BDO"],
     paymentStatus: 1,
     discountType: 1,
     discountAmount: "30"
